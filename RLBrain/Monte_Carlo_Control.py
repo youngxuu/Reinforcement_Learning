@@ -53,10 +53,10 @@ def state_action_index(action, state, action_dict, state_all):
 
     state_act = [action]
     state_act += state
-    for i, state_i in enumerate(state_act):
+    # for i, state_i in enumerate(state_act):
         # print('state_action_index debug', i, state_i)
-        slice_ = state_act_dir[i]
-        # print(slice_)
+        # slice_ = state_act_dir[i]
+    # print(state_act_dir, '\n', 'state_act:', state_act)
 
     return tuple([state_act_dir[i][state_i] for i, state_i in enumerate(state_act)])
 
@@ -90,7 +90,7 @@ class MonteCarloControl(object):
             raise ValueError("Threshold must >= 0 and <= 1!")
         self.gamma = gamma
         _state_action_dim = [self.act_num] + self.state_dim
-        # print(_state_action_dim)
+        print(_state_action_dim)
         self._state_action_num = np.zeros(_state_action_dim, dtype='int32')
         self._state_action_value = np.zeros(_state_action_dim, dtype='float32')
         self.ep_obs, self.ep_as, self.ep_rs = [], [], []
