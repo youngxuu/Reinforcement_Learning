@@ -1,11 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="8cdc81e3-55b4-4bb1-9033-819d4aaaa626" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/Environment/EER_experiment.py" afterDir="false" />
+    <list default="true" id="8cdc81e3-55b4-4bb1-9033-819d4aaaa626" name="Default Changelist" comment="add an experiment of a recent paper">
+      <change afterPath="$PROJECT_DIR$/RLBrain/SARSA.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/RLBrain/TD_learning.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/RLBrain/utils.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/RLBrain/Monte_Carlo_Control.py" beforeDir="false" afterPath="$PROJECT_DIR$/RLBrain/Monte_Carlo_Control.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/run_MC.py" beforeDir="false" afterPath="$PROJECT_DIR$/run_MC.py" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -18,38 +19,41 @@
     <SUITE FILE_PATH="coverage/Reinforcement_Learning$Monte_Carlo_Control.coverage" NAME="Monte_Carlo_Control Coverage Results" MODIFIED="1546868932704" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/RLBrain" />
     <SUITE FILE_PATH="coverage/Reinforcement_Learning$run_MC.coverage" NAME="run_MC Coverage Results" MODIFIED="1546871888007" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/Reinforcement_Learning$easy_21.coverage" NAME="easy_21 Coverage Results" MODIFIED="1546859748699" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/Environment" />
+    <SUITE FILE_PATH="coverage/Reinforcement_Learning$SARSA.coverage" NAME="SARSA Coverage Results" MODIFIED="1553839372349" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/RLBrain" />
   </component>
   <component name="FUSProjectUsageTrigger">
     <session id="-1718596016">
       <usages-collector id="statistics.lifecycle.project">
         <counts>
-          <entry key="project.closed" value="10" />
+          <entry key="project.closed" value="11" />
           <entry key="project.open.time.0" value="6" />
           <entry key="project.open.time.1" value="1" />
           <entry key="project.open.time.29" value="1" />
-          <entry key="project.open.time.6" value="2" />
+          <entry key="project.open.time.6" value="3" />
           <entry key="project.open.time.7" value="1" />
-          <entry key="project.opened" value="11" />
+          <entry key="project.opened" value="12" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.extensions.open">
         <counts>
-          <entry key="py" value="13" />
+          <entry key="py" value="21" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.types.open">
         <counts>
-          <entry key="Python" value="13" />
+          <entry key="Python" value="21" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.extensions.edit">
         <counts>
-          <entry key="py" value="7677" />
+          <entry key="py" value="8412" />
+          <entry key="txt" value="38" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.types.edit">
         <counts>
-          <entry key="Python" value="7677" />
+          <entry key="PLAIN_TEXT" value="38" />
+          <entry key="Python" value="8412" />
         </counts>
       </usages-collector>
     </session>
@@ -64,7 +68,7 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/run_MC.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="270">
+            <state relative-caret-position="837">
               <caret line="35" column="48" selection-start-line="35" selection-start-column="29" selection-end-line="35" selection-end-column="48" />
               <folding>
                 <element signature="e#198#255#0" expanded="true" />
@@ -73,11 +77,11 @@
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="true">
+      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/Environment/EER_experiment.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="209">
-              <caret line="56" column="43" lean-forward="true" selection-start-line="56" selection-start-column="43" selection-end-line="56" selection-end-column="43" />
+            <state relative-caret-position="88">
+              <caret line="48" selection-start-line="48" selection-end-line="62" selection-end-column="62" />
               <folding>
                 <marker date="1553782946777" expanded="true" signature="214:219" ph="..." />
               </folding>
@@ -97,12 +101,61 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/RLBrain/Monte_Carlo_Control.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="216">
-              <caret line="57" column="23" selection-start-line="57" selection-start-column="23" selection-end-line="57" selection-end-column="23" />
+            <state relative-caret-position="331">
+              <caret line="15" selection-start-line="15" selection-end-line="21" selection-end-column="53" />
               <folding>
-                <marker date="1553781959708" expanded="true" signature="927:2028" ph="..." />
-                <marker date="1553781959708" expanded="true" signature="2060:2065" ph="..." />
+                <element signature="e#191#209#0" expanded="true" />
+                <element signature="e#2486#3448#0" />
+                <element signature="e#3494#4408#0" />
+                <marker date="1553839020964" expanded="true" signature="267:270" ph="..." />
+                <marker date="1553839020964" expanded="true" signature="302:307" ph="..." />
               </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/RLBrain/utils.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="-27">
+              <caret line="29" column="22" selection-start-line="29" selection-start-column="4" selection-end-line="29" selection-end-column="22" />
+              <folding>
+                <element signature="e#217#828#0" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/RLBrain/TD_learning.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="297">
+              <caret line="11" lean-forward="true" selection-start-line="11" selection-end-line="11" />
+              <folding>
+                <marker date="1553827178623" expanded="true" signature="202:207" ph="..." />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/RLBrain/SARSA.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="547">
+              <caret line="24" column="89" lean-forward="true" selection-start-line="24" selection-start-column="89" selection-end-line="24" selection-end-column="90" />
+              <folding>
+                <element signature="e#178#196#0" expanded="true" />
+                <marker date="1553839372206" expanded="true" signature="277:282" ph="..." />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://E:/documents/学期课程/强化学习/作业/sarsa/RL_brain_SARSA.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="-540">
+              <caret line="18" column="30" lean-forward="true" selection-start-line="18" selection-start-column="30" selection-end-line="18" selection-end-column="30" />
             </state>
           </provider>
         </entry>
@@ -110,7 +163,7 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/Environment/easy_21.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="466">
+            <state relative-caret-position="3888">
               <caret line="145" selection-start-line="145" selection-end-line="146" selection-end-column="27" />
               <folding>
                 <element signature="e#194#212#0" expanded="true" />
@@ -138,8 +191,12 @@
         <option value="$PROJECT_DIR$/RLBrain/run_MC.py" />
         <option value="$PROJECT_DIR$/Environment/easy_21.py" />
         <option value="$PROJECT_DIR$/run_MC.py" />
-        <option value="$PROJECT_DIR$/RLBrain/Monte_Carlo_Control.py" />
         <option value="$PROJECT_DIR$/Environment/EER_experiment.py" />
+        <option value="$PROJECT_DIR$/RLBrain/TD_learning.py" />
+        <option value="$PROJECT_DIR$/RLBrain/utils.py" />
+        <option value="E:/documents/学期课程/强化学习/作业/sarsa/RL_brain_SARSA.py" />
+        <option value="$PROJECT_DIR$/RLBrain/Monte_Carlo_Control.py" />
+        <option value="$PROJECT_DIR$/RLBrain/SARSA.py" />
       </list>
     </option>
   </component>
@@ -150,10 +207,10 @@
     <sorting>DEFINITION_ORDER</sorting>
   </component>
   <component name="ProjectFrameBounds" extendedState="6">
-    <option name="x" value="865" />
-    <option name="y" value="25" />
-    <option name="width" value="1020" />
-    <option name="height" value="1070" />
+    <option name="x" value="265" />
+    <option name="y" value="80" />
+    <option name="width" value="1040" />
+    <option name="height" value="1075" />
   </component>
   <component name="ProjectLevelVcsManager" settingsEditedManually="true">
     <ConfirmationsSetting value="2" id="Add" />
@@ -189,10 +246,10 @@
   </component>
   <component name="PropertiesComponent">
     <property name="WebServerToolWindowFactoryState" value="false" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/../sccba_project" />
     <property name="nodejs_interpreter_path.stuck_in_default_project" value="undefined stuck path" />
     <property name="nodejs_npm_path_reset_for_default_project" value="true" />
-    <property name="settings.editor.selected.configurable" value="fileTemplates" />
+    <property name="settings.editor.selected.configurable" value="com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable" />
   </component>
   <component name="RecentsManager">
     <key name="MoveFile.RECENT_KEYS">
@@ -211,7 +268,7 @@
       </list>
     </option>
   </component>
-  <component name="RunManager" selected="Python.EER_experiment">
+  <component name="RunManager" selected="Python.SARSA">
     <configuration name="EER_experiment" type="PythonConfigurationType" factoryName="Python" temporary="true">
       <module name="Reinforcement_Learning" />
       <option name="INTERPRETER_OPTIONS" value="" />
@@ -248,6 +305,28 @@
       <option name="ADD_SOURCE_ROOTS" value="true" />
       <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
       <option name="SCRIPT_NAME" value="$PROJECT_DIR$/RLBrain/Monte_Carlo_Control.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
+    <configuration name="SARSA" type="PythonConfigurationType" factoryName="Python" temporary="true">
+      <module name="Reinforcement_Learning" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/RLBrain" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/RLBrain/SARSA.py" />
       <option name="PARAMETERS" value="" />
       <option name="SHOW_COMMAND_LINE" value="false" />
       <option name="EMULATE_TERMINAL" value="false" />
@@ -305,9 +384,11 @@
       <item itemvalue="Python.Monte_Carlo_Control" />
       <item itemvalue="Python.run_MC" />
       <item itemvalue="Python.EER_experiment" />
+      <item itemvalue="Python.SARSA" />
     </list>
     <recent_temporary>
       <list>
+        <item itemvalue="Python.SARSA" />
         <item itemvalue="Python.EER_experiment" />
         <item itemvalue="Python.run_MC" />
         <item itemvalue="Python.Monte_Carlo_Control" />
@@ -326,6 +407,14 @@
       <option name="presentableId" value="Default" />
       <updated>1546748864819</updated>
     </task>
+    <task id="LOCAL-00001" summary="add an experiment of a recent paper">
+      <created>1553783007189</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1553783007189</updated>
+    </task>
+    <option name="localTasksCounter" value="2" />
     <servers />
   </component>
   <component name="TodoView">
@@ -341,18 +430,18 @@
     <frame x="-7" y="-7" width="1550" height="838" extended-state="6" />
     <editor active="true" />
     <layout>
-      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.29155496" />
+      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.0" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="Favorites" order="2" side_tool="true" />
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Find" order="1" />
-      <window_info active="true" anchor="bottom" id="Run" order="2" visible="true" weight="0.56170213" />
+      <window_info anchor="bottom" id="Run" order="2" weight="0.56170213" />
       <window_info anchor="bottom" id="Debug" order="3" weight="0.2549575" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
       <window_info anchor="bottom" id="TODO" order="6" weight="0.32907802" />
       <window_info anchor="bottom" id="Docker" order="7" show_stripe_button="false" />
-      <window_info anchor="bottom" id="Version Control" order="8" show_stripe_button="false" />
+      <window_info anchor="bottom" id="Version Control" order="8" weight="0.32907802" />
       <window_info anchor="bottom" id="Database Changes" order="9" show_stripe_button="false" />
       <window_info anchor="bottom" id="Event Log" order="10" side_tool="true" />
       <window_info anchor="bottom" id="Terminal" order="11" weight="0.32907802" />
@@ -370,8 +459,19 @@
   <component name="VcsContentAnnotationSettings">
     <option name="myLimit" value="2678400000" />
   </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="add an experiment of a recent paper" />
+    <option name="LAST_COMMIT_MESSAGE" value="add an experiment of a recent paper" />
+  </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
+      <breakpoints>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/RLBrain/Monte_Carlo_Control.py</url>
+          <line>46</line>
+          <option name="timeStamp" value="1" />
+        </line-breakpoint>
+      </breakpoints>
       <default-breakpoints>
         <breakpoint type="python-exception">
           <properties notifyOnTerminate="true" exception="BaseException">
@@ -410,6 +510,16 @@
     <entry file="file://$PROJECT_DIR$/Environment/__init__.py">
       <provider selected="true" editor-type-id="text-editor" />
     </entry>
+    <entry file="file://$PROJECT_DIR$/run_MC.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="837">
+          <caret line="35" column="48" selection-start-line="35" selection-start-column="29" selection-end-line="35" selection-end-column="48" />
+          <folding>
+            <element signature="e#198#255#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
     <entry file="file://E:/documents/学期课程/强化学习/作业/作业一/run_main.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="1053">
@@ -419,7 +529,7 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/Environment/easy_21.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="466">
+        <state relative-caret-position="3888">
           <caret line="145" selection-start-line="145" selection-end-line="146" selection-end-column="27" />
           <folding>
             <element signature="e#194#212#0" expanded="true" />
@@ -428,33 +538,76 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/RLBrain/Monte_Carlo_Control.py">
+    <entry file="file://E:/documents/学期课程/强化学习/作业/强化学习作业一二/TD.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="216">
-          <caret line="57" column="23" selection-start-line="57" selection-start-column="23" selection-end-line="57" selection-end-column="23" />
-          <folding>
-            <marker date="1553781959708" expanded="true" signature="927:2028" ph="..." />
-            <marker date="1553781959708" expanded="true" signature="2060:2065" ph="..." />
-          </folding>
+        <state relative-caret-position="-2025" />
+      </provider>
+    </entry>
+    <entry file="file://E:/documents/学期课程/强化学习/作业/TD.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="540">
+          <caret line="94" column="17" selection-start-line="94" selection-start-column="12" selection-end-line="94" selection-end-column="17" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/run_MC.py">
+    <entry file="file://E:/documents/学期课程/强化学习/作业/sarsa/RL_brain_SARSA.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="270">
-          <caret line="35" column="48" selection-start-line="35" selection-start-column="29" selection-end-line="35" selection-end-column="48" />
-          <folding>
-            <element signature="e#198#255#0" expanded="true" />
-          </folding>
+        <state relative-caret-position="-540">
+          <caret line="18" column="30" lean-forward="true" selection-start-line="18" selection-start-column="30" selection-end-line="18" selection-end-column="30" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/Environment/EER_experiment.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="209">
-          <caret line="56" column="43" lean-forward="true" selection-start-line="56" selection-start-column="43" selection-end-line="56" selection-end-column="43" />
+        <state relative-caret-position="88">
+          <caret line="48" selection-start-line="48" selection-end-line="62" selection-end-column="62" />
           <folding>
             <marker date="1553782946777" expanded="true" signature="214:219" ph="..." />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/RLBrain/Monte_Carlo_Control.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="331">
+          <caret line="15" selection-start-line="15" selection-end-line="21" selection-end-column="53" />
+          <folding>
+            <element signature="e#191#209#0" expanded="true" />
+            <element signature="e#2486#3448#0" />
+            <element signature="e#3494#4408#0" />
+            <marker date="1553839020964" expanded="true" signature="267:270" ph="..." />
+            <marker date="1553839020964" expanded="true" signature="302:307" ph="..." />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/RLBrain/SARSA.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="547">
+          <caret line="24" column="89" lean-forward="true" selection-start-line="24" selection-start-column="89" selection-end-line="24" selection-end-column="90" />
+          <folding>
+            <element signature="e#178#196#0" expanded="true" />
+            <marker date="1553839372206" expanded="true" signature="277:282" ph="..." />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/RLBrain/TD_learning.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="297">
+          <caret line="11" lean-forward="true" selection-start-line="11" selection-end-line="11" />
+          <folding>
+            <marker date="1553827178623" expanded="true" signature="202:207" ph="..." />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/RLBrain/utils.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-27">
+          <caret line="29" column="22" selection-start-line="29" selection-start-column="4" selection-end-line="29" selection-end-column="22" />
+          <folding>
+            <element signature="e#217#828#0" />
           </folding>
         </state>
       </provider>
