@@ -8,9 +8,10 @@
 
 import numpy as np
 from RLBrain.utils import state_action_index, state_index
+from RLBrain.Base_Brain import BaseBrain
 
 
-class MonteCarloControl(object):
+class MonteCarloControl(BaseBrain):
     """
     Monte Carlo Control for reinforcement learning
     Parameters
@@ -21,27 +22,11 @@ class MonteCarloControl(object):
 
     gamma: float, 0 < gamma < 1, reward discount rate
     """
+
     def __init__(self, action_all, state_all, n_0=100, gamma=0.01):
-        self.act_num = len(action_all)
-        act_dict = {}
-        act_dict.update({act: i for i, act in enumerate(action_all)})
-        self.act_dict = act_dict
-        self.idx_act = {v: k for k, v in self.act_dict.items()}
-        self.state_all = state_all
-        state_dim = []
-        for i in range(len(self.state_all)):
-            state_dim.append(len(self.state_all[i]))
-        self.state_dim = state_dim
+        super().__init__(action_all, state_all, gamma)
         self.n_0 = n_0
-        if not isinstance(gamma, float):
-            raise TypeError("Threshold is not a float value!")
-        if not 0 < gamma < 1:
-            raise ValueError("Threshold must >= 0 and <= 1!")
-        self.gamma = gamma
-        _state_action_dim = [self.act_num] + self.state_dim
-        print(_state_action_dim)
-        self._state_action_num = np.zeros(_state_action_dim, dtype='int32')
-        self._state_action_value = np.zeros(_state_action_dim, dtype='float32')
+        self._state_action_num = np.zeros(self._state_action_dim, dtype='int32')
         self.ep_obs, self.ep_as, self.ep_rs = [], [], []
 
     def choose_action(self, state):
@@ -101,12 +86,23 @@ class MonteCarloControl(object):
 
 
 if __name__ == '__main__':
-    mc = MonteCarloControl(['hit', 'stick'], [[1, 2], [1, 3]])
-    act = mc.choose_action([1, 3])
-    print(act)
+        from Environment.EER_experiment import Environment
 
-    mc.store_transactions([1, 3], act, 1)
-    mc.learn()
+        env = Environment()
+        state_all = [list(range(0, 200))]
+        action_all = env.act_space
+        rl_brain = MonteCarloControl(action_all, state_all)
+        for i in range(500):
+            done = False
+            s = env.restart()
+            while not done:
+                act = rl_brain.choose_action(s)
+                s_, r, done = env.step(act)
+                rl_brain.store_transactions(s, act, r)
+                s = s_
+            rl_brain.learn()
+        print(rl_brain._state_action_value)
+        print(np.argmax(rl_brain._state_action_value, axis=0) + 1)
 
 
 
