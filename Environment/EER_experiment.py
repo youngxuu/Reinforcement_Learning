@@ -43,7 +43,7 @@ class Environment(object):
 
 
 if __name__ == '__main__':
-    from RLBrain.Monte_Carlo_Control import MonteCarloControl
+    from RLBrain_LookupTable.Monte_Carlo_Control import MonteCarloControl
     import numpy as np
 
     env = Environment()

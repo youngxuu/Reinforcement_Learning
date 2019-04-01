@@ -7,7 +7,7 @@
 # @Software: PyCharm
 
 __version__ = "1.0"
-from RLBrain.Monte_Carlo_Control import MonteCarloControl
+from RLBrain_LookupTable.Monte_Carlo_Control import MonteCarloControl
 from Environment.easy_21 import Easy_21
 import numpy as np
 from mpl_toolkits.mplot3d import Axes3D

@@ -7,8 +7,8 @@
 # @Software: PyCharm
 
 import numpy as np
-from RLBrain.utils import state_index, state_action_index
-from RLBrain.Base_Brain import BaseBrain
+from RLBrain_LookupTable.utils import state_index, state_action_index
+from RLBrain_LookupTable.Base_Brain import BaseBrain
 
 
 class Sarsa(BaseBrain):
