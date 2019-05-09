@@ -37,7 +37,7 @@ deactivate () {
 # unset irrelevant variables
 deactivate nondestructive
 
-VIRTUAL_ENV="E:\python_demo\Reinforcement_Learning\venv"
+VIRTUAL_ENV="D:\python_demo\Reinforcement_Learning\venv"
 export VIRTUAL_ENV
 
 _OLD_VIRTUAL_PATH="$PATH"
