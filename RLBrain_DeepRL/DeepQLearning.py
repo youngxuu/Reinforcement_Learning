@@ -229,31 +229,6 @@ class DeepQLearning(_BaseDeepRL):
         return pred
 
 
-if __name__ == '__main__':
-    from Environment.day_to_day_trans_flow import Environment
-    venv = Environment()
-
-    actions =(0.1 * np.arange(0, 50, dtype='float32')).tolist()
-    n_actions = len(actions)
-    rl_brain = DeepQLearning(n_features=12, n_actions=n_actions, actions=actions,
-                             learning_rate=0.001, e_greedy=0.1,
-                             reward_decay=0.9, output_graph=True, double=False)
-    epochs = 100
-    for epoch in range(epochs):
-        s = venv.reset()
-        total_r = 0
-        for t in range(30):
-            a = rl_brain.choose_action(s)
-            r, s_, done = venv.step(a)
-            rl_brain.store_transactions(s, a, s_, r, done)
-            s = s_
-            total_r += r
-            if done:
-                break
-        rl_brain.learn()
-        if epoch % 10 == 0:
-            print('epoch: %d, total reward: %0.2f' % (epoch, total_r))
-
 
 
 
