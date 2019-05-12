@@ -5,9 +5,10 @@
 # @email   : xuyong@smail.swufe.edu.cn
 # @File    : EER_experiment.py
 # @Software: PyCharm
+from Environment.BaseEnvironment import _BaseEnvironment
 
 
-class Environment(object):
+class Environment(_BaseEnvironment):
     """
     The environment is based on the experiment of a recently published paper.
     for more details of the experiment, please refer to:
@@ -19,7 +20,7 @@ class Environment(object):
         self.count = 0
         self.act_space = [1, 2, 3, 4]
 
-    def restart(self):
+    def reset(self):
         self.count = 0
         ini_state = [self.count]
         return ini_state
@@ -52,7 +53,7 @@ if __name__ == '__main__':
     rl_brain = MonteCarloControl(action_all, state_all)
     for i in range(100):
         done = False
-        s = env.restart()
+        s = env.reset()
         while not done:
             act = rl_brain.choose_action(s)
             s_, r, done = env.step(act)
