@@ -10,26 +10,10 @@
 
 import numpy as np
 import abc
+from Environment.BaseEnvironment import _BaseEnvironment
 
 
-class Environment(object, metaclass=abc.ABCMeta):
-    """
-    base environment
-    """
-    def __init__(self):
-        super().__init__()
-
-    @abc.abstractmethod
-    def restart(self):
-        """
-        restart the environment
-        return :initial state
-        :return:
-        """
-        pass
-
-
-class Easy_21(Environment):
+class Easy21(_BaseEnvironment):
     """
     this is an 'easy-21' environment,
     it is a demo
@@ -56,7 +40,7 @@ class Easy_21(Environment):
         self.dealer_sum = 0
         self.dealer_init_cards = None
 
-    def restart(self):
+    def reset(self):
         """
         Initialize the game,
         each player draw one black card(fully observed)
@@ -138,7 +122,7 @@ class Easy_21(Environment):
 
 
 if __name__ == '__main__':
-    env = Easy_21()
+    env = Easy21()
     help(env)
     # for i in range(100):
     #     print('game start %d'%(i + 1))
