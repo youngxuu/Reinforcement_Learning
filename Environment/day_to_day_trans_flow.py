@@ -4,9 +4,10 @@
 # @email   : xuyong@smail.swufe.edu.cn
 import numpy as np
 from scipy.optimize import minimize
+from Environment.BaseEnvironment import _BaseEnvironment
 
 
-class Environment(object):
+class Environment(_BaseEnvironment):
     """
     Final Project
     Model-free control of day-to-day dynamics with DQN
@@ -39,6 +40,7 @@ class Environment(object):
         self.C_a_changed = np.array(
             [500, 1000, 1000, 1000, 1000, 1000, 1000, 1000, 1000, 1000, 1000, 1000],
             dtype='float32')
+        self.stable_count = 0
 
     def reset(self):
         """
@@ -49,6 +51,7 @@ class Environment(object):
                             [1000, 500, 1000, 500, 500, 500, 500, 500, 500, 1000, 500, 1000],
                             dtype='float32')
         self.state = init_state.copy()
+        self.stable_count = 0
         return init_state
 
     def step(self, action):
@@ -79,12 +82,13 @@ class Environment(object):
         self.state += delta_x
         state_ = self.state.copy()
         # calculate the reward(negative cost)
-        cost = np.sum(self.t_a + action
+        cost = np.sum(self.t_a #+ action
                       + 0.15 * self.t_a * self.state ** 4 / self.C_a_changed ** 4)
         # whether the network goes to stable, if stable, add a negative cost to the reward
-        if np.sum(np.abs(delta_x)) < 10:
-            done = True
+        if np.sum(np.abs(delta_x)) < 1.:
+
             cost += -100000
+
         return -cost, state_, done
 
 
@@ -116,5 +120,5 @@ if __name__ == '__main__':
     plt.xlim(0, 30)
     plt.ylim(0.2, 2)
     plt.xlabel('day')
-    plt.ylabel('normalized linkflow')
+    plt.ylabel('normalized link flow')
     plt.show()
