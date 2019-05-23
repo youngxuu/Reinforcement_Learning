@@ -18,10 +18,10 @@ class ArmEnv(_BaseEnvironment):
     action_dim = 2
 
     def __init__(self):
-        self.goal = {'x': np.random.randint(0, 400), 'y': np.random.randint(0, 400), 'l': 40}
+        self.goal = {'x': np.random.randint(0, 380), 'y': np.random.randint(0, 380), 'l': 40}
         self.arm_info = np.zeros(
             2, dtype=[('l', np.float32), ('r', np.float32)])
-        self.arm_info['l'] = 100
+        self.arm_info['l'] = 110
         self.arm_info['r'] = np.pi / 6
         self.on_goal = 0
 
@@ -32,10 +32,6 @@ class ArmEnv(_BaseEnvironment):
         action = np.clip(action, *self.action_bound)
         self.arm_info['r'] += action * self.dt
         self.arm_info['r'] %= np.pi * 2  # normalize
-
-        # 我们可以将两截手臂的角度信息当做一个 state (之后会变)
-        s = self.arm_info['r']
-
         # 如果手指接触到蓝色的 goal, 我们判定结束回合 (done)
         # 所以需要计算 finger 的坐标
         (a1l, a2l) = self.arm_info['l']  # radius, arm length
@@ -48,7 +44,7 @@ class ArmEnv(_BaseEnvironment):
         r = -np.sqrt(dist2[0] ** 2 + dist2[1] ** 2)
         if self.goal['x'] - self.goal['l'] / 2 < finger[0] < self.goal['x'] + self.goal['l'] / 2:
             if self.goal['y'] - self.goal['l'] / 2 < finger[1] < self.goal['y'] + self.goal['l'] / 2:
-                r += 1.  # finger 在 goal 以内
+                r += 1. * self.on_goal  # finger 在 goal 以内
                 self.on_goal += 1
                 if self.on_goal > 50:
                     done = True
@@ -157,17 +153,45 @@ class Viewer(pyglet.window.Window):
 
 
 if __name__ == '__main__':
+    import time
     env = ArmEnv()
     state_dim = ArmEnv.state_dim
     action_dim = ArmEnv.action_dim
-    a_slice = [-1 + i*0.2 for i in range(0, 11)]
+    a_slice = [-1 + i*0.25 for i in range(0, 9)]
     action_all = []
     for a1 in a_slice:
         for a2 in a_slice:
             action_all.append([a1, a2])
+    from RLBrain_DeepRL.DeepQLearning import DeepQLearning
+    rl_brain = DeepQLearning(n_features=state_dim, n_actions=len(a_slice)**2,
+                             actions=action_all,
+                             learning_rate=0.001, e_greedy=0.2,
+                             reward_decay=0.9, output_graph=True, double=True, EnQ=True)
+    t0 = time.time()
+    ep_r = np.zeros(10)
+    for epoch in range(400):
+        finished = False
+        state = env.reset()
+        r_total = 0.
+        for t in range(100):
+            env.render()
+            act = rl_brain.choose_action(state)
+            # print(act)
+            state_, r, finished = env.step(act)
+            rl_brain.store_transactions(state, act, state_, r, finished)
+            r_total += r
+            rl_brain.learn()
+            state = state_
+            if finished:
+                print('on target')
+                break
+        index = epoch % 10
+        ep_r[index] = r_total
+        sum_r = np.sum(ep_r)
+        # if epoch % 10 == 0:
+        t1 = time.time()
+        print('epoch: %d;    learning iter: %d;    time cost: %.2f'
+              % (epoch, rl_brain.learn_iter, t1 - t0))
+        print('total reward: %.2f, total reward(last 10 epoch): %.2f' % (r_total, sum_r))
+        t0 = t1
 
-
-    while True:
-        env.render()
-
-        env.step(env.sample_action())

@@ -35,13 +35,14 @@ class DeepQLearning(_BaseDeepRL):
     def __init__(self, n_features, n_actions, actions,
                  learning_rate, e_greedy, reward_decay,
                  double,  EnQ=False, n_steps=5,
-                 replace_target=50, replay_size=1000,
-                 batch_size=64, output_graph=False):
+                 replace_target=100, replay_size=10000,
+                 batch_size=32, output_graph=False):
         super().__init__(n_features, n_actions,
                          learning_rate, e_greedy, reward_decay)
         # actions index dict(index actions dict)
-        self.act_idx = {act: idx for idx, act in enumerate(actions)}
-        self.idx_act = {idx: act for act, idx in self.act_idx.items()}
+        # in case of unhashable type for keys
+        # self.act_idx = {act: idx for idx, act in enumerate(actions)}
+        self.idx_act = {idx: act for idx, act in enumerate(actions)}
         self.double = double
         self.EnQ = EnQ
         if EnQ:
@@ -220,8 +221,11 @@ class DeepQLearning(_BaseDeepRL):
         if self.EnQ:
             reward = self.expected_n_step_return(reward, done_)
         index = self.transactions_count % self.memory_size
-        action = self.act_idx[action]
-        self.replay_memory[index, :] = np.hstack((state, state_, [action, reward, done_]))
+        # action = self.act_idx[action]
+        action = [key for key, value in self.idx_act.items() if value == action][0]
+        # print(action)
+        self.replay_memory[index, :] = \
+            np.hstack((state, state_, [action, reward, done_]))
         self.transactions_count += 1
 
     def predict(self, state_):
