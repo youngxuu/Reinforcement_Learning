@@ -10,8 +10,24 @@ from scipy.sparse import csr_matrix
 
 
 class PolicyIteration(BaseDynamicPrograming):
+    """
+    Policy Evaluation;
+    see ref: Reinforcement learning an introduction pp 65
+    params:
+    state_a_prob: an numpy array with 3 dimensions (state, next state, action)
+                with each action slice specifies the transition probability of
+                current state to next state (i.e. transition matrix)
+    gamma: float, 0 < gamma< 1, reward discount rate
+    tol: float, for every epoch, we calculate the sum of absolute value of delta state value (delta)
+         and check whither state value is stable. if stable (i.e. delta < tol) then we stop the iteration
+
+    s_a_r: numpy array, with shape (n_state, n_action)
+           with each element represent the reward received after take an action j on state i
+    n_epochs: int, number of iterations
+    reward_state_depend: bool default True, i.e. reward is only depend on state
+    """
     def __init__(self, state_a_prob, gamma, tol, s_a_r, n_epochs,
-                ):
+                 ):
         self.gamma = gamma
         self.tol = tol
         self.n_state = state_a_prob.shape[0]
@@ -29,9 +45,15 @@ class PolicyIteration(BaseDynamicPrograming):
         self.record_delta = 10
         self.deltas = []
         self.verbose = True
-        self.epsion = 0.01
+        # self.epsion = 0.01
 
     def _value_iteration(self, ):
+        """
+        value iteration:
+
+        state_value_t = reward_policy + discount_rate * policy_transitions_matrix * state_value_t-1
+        :return:
+        """
         r_policy = np.sum(self.policy * self.s_a_r, axis=1).reshape(-1, 1)
         p_policy = np.sum(self.policy * self.state_a_prob, axis=2)
         v_update = r_policy + self.gamma * np.dot(p_policy, self.value)
@@ -40,10 +62,17 @@ class PolicyIteration(BaseDynamicPrograming):
         return delta
 
     def _policy_iteration(self):
+        """
+        calculate the state action value,
+        update policy by choose the action that have the maximum state action value
+        :return:
+        """
+        # calculate the state action value,
         value = self.value.copy().T
         value = np.expand_dims(value, axis=2)
         values = np.concatenate(tuple([value for acm in range(self.n_act)]), axis=2)
         p_dot_v = self.s_a_r + np.sum(self.state_a_prob * values, axis=1)
+        # in case there are more than one max value
         max_idx = [np.argwhere(p_dot_v[i] == np.max(p_dot_v[i]))[:, 0].tolist() for i in range(p_dot_v.shape[0])]
         rows = [[i] * len(idxs) for i, idxs in enumerate(max_idx)]
         policyvalue = [(np.ones(shape=(len(idxs))) * 1/len(idxs)).tolist() for i, idxs in enumerate(max_idx)]
@@ -52,6 +81,7 @@ class PolicyIteration(BaseDynamicPrograming):
         policyvalue = list(itertools.chain(*policyvalue))
         policy = csr_matrix((policyvalue, (rows, columns)), shape=[self.n_state, self.n_act],
                             dtype='float32').todense()
+        # transform numpy.matrix to numpy.ndarrays
         policy = policy.A
         if (policy == self.policy).all():
             return True
@@ -75,7 +105,6 @@ class PolicyIteration(BaseDynamicPrograming):
             if policy_stable and stable_count == 0:
                 print('iteration policy_stable at epoch: ', epoch)
                 stable_count += 1
-
             if policy_stable and delta <= self.tol:
                 print('iteration stopped with convergence')
                 break
@@ -122,6 +151,6 @@ if __name__ == '__main__':
                                        s_a_r=state_act_reward,
                                        n_epochs=500)
     policyevaluation.learn()
-    print('state_value: ', policyevaluation.value)
-    print('policy: ', policyevaluation.policy)
+    print('state_value: ',  '\n', policyevaluation.value)
+    print('policy: ', '\n', policyevaluation.policy)
 
