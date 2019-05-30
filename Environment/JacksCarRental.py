@@ -10,6 +10,27 @@ from Environment.BaseEnvironment import _BaseEnvironment
 class CarRental(_BaseEnvironment):
     """
     an implement of jack's car rental
+    Jack manages two locations for a nationwide car rental company.
+    Each day, some number of customers arrive at each location to rent cars.
+    If Jack has a car available, he rents it out and is credited $10
+    by the national company.
+    If he is out of cars at that location, then the business is lost.
+    Cars become available for renting the day after they are returned.
+    To help ensure that cars are available where they are needed,
+    Jack can move them between the two locations overnight, at a cost of $2 per car moved.
+    We assume that the number of cars requested and returned at each location are
+    Poisson random variables, meaning that the probability that the number is n is λn/n! e−λ,
+    where λ is the expected number.
+    Suppose λ is 3 and 4 for rental requests at the first and second locations
+    and 3 and 2 for returns.
+    To simplify the problem slightly, we assume that there can be no more than 20 cars
+    at each location (any additional cars are returned to the nationwide company,
+    and thus disappear from the problem) and a maximum of five cars can be moved
+    from one location to the other in one night. We take the discount rate to be
+    γ = 0.9 and formulate this as a continuing finite MDP,
+    where the time steps are days,
+    the state is the number of cars at each location at the end of the day,
+    and the actions are the net numbers of cars moved between the two locations overnight.
     States: Two locations, maximum of 20 cars at each
     Actions: Move up to 5 cars between locations overnight
     Reward: $10 for each car rented (must be available)
@@ -35,6 +56,7 @@ class CarRental(_BaseEnvironment):
         self.total_cars = avg_cars * self.n_locations
         self.state = avg_cars * np.ones(shape=[self.n_locations, 1], dtype='float32')
         self.t = 0
+        self.loc_capacity = 20
 
     def reset(self):
         """
@@ -64,22 +86,23 @@ class CarRental(_BaseEnvironment):
         :return:
         """
         self.t += 1
-        done = False if self.t <= 30 else True
-        #     check feasibility of actions
+        done = False if self.t <= 10 else True
+        # check feasibility of actions
         if actions > 0:
             if self.state[0] < actions:
                 actions = self.state[0, 0].copy()
+            # print('number of cars moved to loc2: ', actions)
         else:
             if self.state[1] + actions < 0:
                 actions = -self.state[1, 0].copy()
+            # print('number of cars moved to loc1: ', actions)
+
         # update state after Transitions
         actions_all = np.array([[-actions], [actions]], dtype='float32')
         self.state += actions_all
-        #    generate requests and returns
+        # generate requests and returns
         requests = self._requests()
-        self.state -= requests
-        returns = self._returns(requests)
-        self.state += returns
+        self._returns()
         reward = self.rent_fee * np.sum(requests)
         return self.state.copy(), reward, done
 
@@ -91,42 +114,31 @@ class CarRental(_BaseEnvironment):
         # generate requests
         requests = np.random.poisson(self.avg_requests, size=(self.n_locations, 1))
         # check requests
-        for loc in range(self.n_locations):
-            if requests[loc, 0] > self.state[loc, 0]:
-                requests[loc, 0] = self.state[loc, 0].copy()
+        requests = np.where(requests >= self.state,
+                            self.state, requests)
+
+        self.state -= requests
+
         return requests
 
-    def _returns(self, requests):
+    def _returns(self):
         """
         generate returns
-        note:  since the total car in system is
-               equal to maximum of location capacity,
-               no chick is needed for returns
-        however, we need to check whither the total returns is equal the total rentals
-
-        the same questions raised when the number of locations is large than 2
-        :param requests:
+        and check feasibility of returns
         :return: returns
         """
-        # total_returns = np.sum(requests) + 1
-        # returns = [0, 0]
-        # while total_returns != np.sum(requests):
-        #     returns = np.random.poisson(self.avg_return, size=(self.n_locations, 1))
 
-        total_rented = np.sum(requests).copy()
-        # print(total_rented)
-        if total_rented == 0:
-            returns = np.zeros_like(self.state)
-        else:
-            returns0 = np.random.randint(0, total_rented, 1)[0]
-            returns = np.array([[returns0], [total_rented-returns0]])
+        returns = np.random.poisson(self.avg_return, size=(self.n_locations, 1))
 
-        return returns
+        returns = np.where(returns + self.state >= self.loc_capacity,
+                           self.loc_capacity - self.state, returns)
+
+        self.state += returns
 
 
 if __name__ == '__main__':
     env = CarRental()
-    for epoch in range(10):
+    for epoch in range(1):
         state = env.reset()
         done = False
         print('epoch %d' % epoch)
