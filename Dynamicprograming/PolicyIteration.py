@@ -106,7 +106,7 @@ class PolicyIteration(BaseDynamicPrograming):
                 print('iteration policy_stable at epoch: ', epoch)
                 stable_count += 1
             if policy_stable and delta <= self.tol:
-                print('iteration stopped with convergence')
+                print('iteration stopped with convergence. ', 'delta: ', delta, 'epoch: %d' % epoch)
                 break
 
 
