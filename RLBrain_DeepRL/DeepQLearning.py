@@ -34,11 +34,11 @@ class DeepQLearning(_BaseDeepRL):
     """
     def __init__(self, n_features, n_actions, actions,
                  learning_rate, e_greedy, reward_decay,
-                 double,  EnQ=False, n_steps=5,
-                 replace_target=100, replay_size=10000,
-                 batch_size=32, output_graph=False):
-        super().__init__(n_features, n_actions,
-                         learning_rate, e_greedy, reward_decay)
+                 double, config, EnQ=False, n_steps=5,
+                 replace_target=100, replay_size=1000,
+                 batch_size=8, output_graph=False):
+        super().__init__(n_features,
+                         learning_rate, e_greedy, reward_decay, n_actions)
         # actions index dict(index actions dict)
         # in case of unhashable type for keys
         # self.act_idx = {act: idx for idx, act in enumerate(actions)}
@@ -65,14 +65,13 @@ class DeepQLearning(_BaseDeepRL):
             # assign the learned params to target network
             self.target_replace_op = [tf.assign(t, e) for t, e in zip(t_params, e_params)]
         # gpu configs
-        config = tf.ConfigProto()
-        config.gpu_options.per_process_gpu_memory_fraction = 0.4
+
         self.sess = tf.Session(config=config)
         # output graph to logdir
         if self.output_graph:
-            if os.path.exists(log_dir):
-                for file in os.listdir(log_dir):
-                    os.remove(os.path.join(log_dir, file))
+            # if os.path.exists(log_dir):
+            #     for file in os.listdir(log_dir):
+            #         os.remove(os.path.join(log_dir, file))
             # tf.summary.FileWriter(log_dir, self.sess.graph)
             self.writer = tf.summary.FileWriter(log_dir, self.sess.graph)
 
@@ -86,8 +85,7 @@ class DeepQLearning(_BaseDeepRL):
         self.state_ = tf.placeholder(dtype=tf.float32, shape=[None, self.n_features, ], name='state_')
         self.action = tf.placeholder(dtype=tf.int32, shape=[None, ], name='action')
         self.q_target_value = tf.placeholder(dtype=tf.float32, shape=[None, ], name='q_target_value')
-        h1_dim = 256
-
+        h1_dim = 64
         # target network
         with tf.variable_scope('target_network'):
             h1 = tf.layers.dense(self.state_, units=h1_dim, activation=tf.nn.relu,
@@ -95,7 +93,7 @@ class DeepQLearning(_BaseDeepRL):
                                  bias_initializer=tf.constant_initializer(0),
                                  name='hidden_1'
                                  )
-            self.q_target = tf.layers.dense(h1, units=self.n_actions, activation=None,
+            self.q_target = tf.layers.dense(h1, units=self.n_actions,
                                             kernel_initializer=tf.random_normal_initializer(),
                                             bias_initializer=tf.constant_initializer(0),
                                             name='q_target'
@@ -134,7 +132,7 @@ class DeepQLearning(_BaseDeepRL):
         """
         state = state[np.newaxis, :].astype('float32')
         if np.random.uniform(0, 1) < 1 - self.e_greedy:
-            q_a = self.sess.run(self.q_target, feed_dict={self.state_: state})
+            q_a = self.sess.run([self.q_target], feed_dict={self.state_: state})
             action_idx = np.argmax(np.squeeze(q_a))
         else:
             action_idx = np.random.randint(0, self.n_actions)
@@ -152,7 +150,7 @@ class DeepQLearning(_BaseDeepRL):
         """
         if self.transactions_count >= self.memory_size:
             # update the target network
-            if self.learn_iter % self.replace_target_iter:
+            if self.learn_iter % self.replace_target_iter == 0:
                 # print('update target network')
                 self.sess.run(self.target_replace_op)
 

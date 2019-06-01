@@ -16,8 +16,8 @@ class _BaseDeepRL(object, metaclass=abc.ABCMeta):
     e_greedy: float, 0<e_greedy<1, exploration rate of agent
     reward_decay: float, 0<reward_decay<1, reward decay rate
     """
-    def __init__(self, n_features, n_actions,
-                 learning_rate, e_greedy, reward_decay):
+    def __init__(self, n_features,
+                 learning_rate, e_greedy, reward_decay, n_actions=None):
         super().__init__()
         self.n_actions = n_actions
         self.n_features = n_features
