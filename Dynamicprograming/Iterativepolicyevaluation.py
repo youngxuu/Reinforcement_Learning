@@ -13,8 +13,9 @@ class BaseDynamicPrograming(object):
     @staticmethod
     def _check_transition_p(state_a_p):
         """
+
         test whither the transition matrix is feasible
-        :param state_a_p:
+        :param state_a_p: numpy.array, 3 dimensions w.r.t [s, s_, a]
         :return:
         """
         p_sum = np.sum(state_a_p, axis=1)
@@ -22,7 +23,6 @@ class BaseDynamicPrograming(object):
 
     def _learn(self, **kwargs):
         """
-
         :param kwargs:
         :return:
         """
