@@ -70,7 +70,7 @@ if __name__ == '__main__':
     rl_brain = Sarsa(action_all, state_all)
     for i in range(500):
         done = False
-        s = env.restart()
+        s = env.reset()
         act = rl_brain.choose_action(s)
         while not done:
             s_, r, done = env.step(act)

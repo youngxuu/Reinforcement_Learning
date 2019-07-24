@@ -40,7 +40,8 @@ class Environment(_BaseEnvironment):
         self.C_a_changed = np.array(
             [500, 1000, 1000, 1000, 1000, 1000, 1000, 1000, 1000, 1000, 1000, 1000],
             dtype='float32')
-        self.stable_count = 0
+        self.delta_flow = []
+        self.stable_threshold = 10.
 
     def reset(self):
         """
@@ -51,7 +52,8 @@ class Environment(_BaseEnvironment):
                             [1000, 500, 1000, 500, 500, 500, 500, 500, 500, 1000, 500, 1000],
                             dtype='float32')
         self.state = init_state.copy()
-        self.stable_count = 0
+        self.delta_flow = []
+
         return init_state
 
     def step(self, action):
@@ -85,9 +87,18 @@ class Environment(_BaseEnvironment):
         cost = np.sum(self.t_a #+ action
                       + 0.15 * self.t_a * self.state ** 4 / self.C_a_changed ** 4)
         # whether the network goes to stable, if stable, add a negative cost to the reward
-        if np.sum(np.abs(delta_x)) < 1.:
-
-            cost += -100000
+        self.delta_flow.append(delta_x)
+        if len(self.delta_flow) < 5:
+            done = False
+        else:
+            abs_delta = [np.sum(np.abs(delta)) for delta in self.delta_flow]
+            delta_total = np.mean(abs_delta)
+            if delta_total <= self.stable_threshold:
+                done = True
+                cost += cost / delta_total
+            else:
+                done = False
+                cost += cost / (delta_total ** 2)
 
         return -cost, state_, done
 
@@ -122,3 +133,10 @@ if __name__ == '__main__':
     plt.xlabel('day')
     plt.ylabel('normalized link flow')
     plt.show()
+
+
+if __name__ == '__main__':
+    """
+    a test for path link flow
+    
+    """

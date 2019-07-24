@@ -28,8 +28,8 @@ class Environment(_BaseEnvironment):
     def step(self, act):
         self.count += 1
         done = False
-        if not isinstance(act, int):
-            raise TypeError('action must int type, but got %s instead.' % (type(act)))
+        # if not isinstance(act, int):
+        #     raise TypeError('action must int type, but got %s instead.' % (type(act)))
         if act not in self.act_space:
             raise ValueError('action must in [1, 2, 3, 4], but got %s instead.' % (act))
         r = 0

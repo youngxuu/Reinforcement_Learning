@@ -63,7 +63,7 @@ if __name__ == '__main__':
     loss_total = []
     for i in range(1000):
         done = False
-        s = env.restart()
+        s = env.reset()
         while not done:
             act = rl_brain.choose_action(s)
             s_, r, done = env.step(act)

@@ -8,6 +8,7 @@ import matplotlib.pyplot as plt
 
 from Environment.day_to_day_trans_flow import Environment
 from RLBrain_DeepRL.DeepQLearning import DeepQLearning
+import tensorflow as tf
 
 
 def plot_link_flow(link, actions):
@@ -61,25 +62,50 @@ def main():
     # number of possibles actions
     n_actions = len(actions)
     # rl brain
-    rl_brain = DeepQLearning(n_features=12, n_actions=n_actions, actions=actions,
-                             learning_rate=0.01, e_greedy=0.1,
-                             reward_decay=0.9, output_graph=True, double=True, EnQ=True)
+    config = tf.ConfigProto()
+    config.gpu_options.per_process_gpu_memory_fraction = 0.4
+    rl_brain = DeepQLearning(n_features=12*3, n_actions=n_actions, actions=actions,
+                             learning_rate=0.01, e_greedy=0.15,
+                             reward_decay=0.9, output_graph=True, double=True, EnQ=True, config=config)
     # specify link to set tool booth
     charged_link = 1
     # number of learning epochs
-    epochs = 100
+    epochs = 2000
     # store the total reward per 10 epochs
     store_total_reward = []
     stored_epochs = []
     # store the learned policy at the last epoch
     policy = []
     start_t = time.time()
+    from sklearn.preprocessing import StandardScaler
+    sd = StandardScaler()
+    s = venv.reset()
+    s_rl = np.hstack((venv.C_a_changed, s, venv.C_a_changed - s))
+
+    s_total = np.zeros(shape=(300, s_rl.shape[0]), dtype='float32')
+    for t in range(300):
+        s_total[t, :] = s_rl
+        a = np.random.randint(0, 6)
+        # action transform
+        one_hot = np.zeros(12, dtype='float32')
+        one_hot[charged_link - 1] = 1
+        action = a * one_hot
+        r, s_, done = venv.step(action)
+        s_rl_ = np.hstack((s, s_, s_ - s))
+        s = s_
+        s_rl = s_rl_
+
+    sd.fit(s_total)
+
     for epoch in range(epochs):
         s = venv.reset()
+        s_rl = np.hstack((venv.C_a_changed, s, venv.C_a_changed - s))
+        s_rl = sd.transform(s_rl.reshape(1, -1))[0]
+        # print(s_rl)
         total_r = 0
         delta_flows = []
         for t in range(30):
-            a = rl_brain.choose_action(s)
+            a = rl_brain.choose_action(s_rl)
             # action transform
             one_hot = np.zeros(12, dtype='float32')
             one_hot[charged_link - 1] = 1
@@ -87,12 +113,11 @@ def main():
             r, s_, done = venv.step(action)
             delta_flow = np.sum(np.abs(s_ - s))
             delta_flows.append(delta_flow)
-            if t >= 2 and np.sum(delta_flows[-3:]) <= 1.:
-                r_ = r + 100000
-            else:
-                r_ = r
-            rl_brain.store_transactions(s, a, s_, r_, done)
+            s_rl_ = np.hstack((s, s_, s_ - s))
+            s_rl_ = sd.transform(s_rl_.reshape(1, -1))[0]
+            rl_brain.store_transactions(s_rl, a, s_rl_, r, done)
             s = s_
+            s_rl = s_rl_
             total_r += r
             if epoch == epochs - 1:
                 policy.append(a)
@@ -105,7 +130,7 @@ def main():
             store_total_reward.append(total_r)
             end_time = time.time()
             print('epoch: %d, '
-                  'total time cost per 10 epoch: %.2f ;'
+                  'total time cost per 5 epoch: %.2f ;'
                   'total reward: %0.2f; learning iter: %d'
                   % (epoch, end_time - start_t, total_r, rl_brain.learn_iter))
             start_t = end_time

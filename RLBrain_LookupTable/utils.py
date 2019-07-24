@@ -6,6 +6,7 @@
 # @File    : utils.py
 # @Software: PyCharm
 
+
 def state_index(state, state_all):
     """
     transform state to index
@@ -50,9 +51,4 @@ def state_action_index(action, state, action_dict, state_all):
 
     state_act = [action]
     state_act += state
-    # for i, state_i in enumerate(state_act):
-        # print('state_action_index debug', i, state_i)
-        # slice_ = state_act_dir[i]
-    # print(state_act_dir, '\n', 'state_act:', state_act)
-
     return tuple([state_act_dir[i][state_i] for i, state_i in enumerate(state_act)])

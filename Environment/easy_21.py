@@ -108,9 +108,7 @@ class Easy21(_BaseEnvironment):
 
                 reward = 1
             else:
-
                 if self.player_sum > self.dealer_sum:
-
                     reward = 1
                 elif self.dealer_sum == self.player_sum:
 

@@ -61,7 +61,7 @@ if __name__ == '__main__':
     rl_brain = QLearning(action_all, state_all)
     for i in range(500):
         done = False
-        s = env.restart()
+        s = env.reset()
         while not done:
             act = rl_brain.choose_action(s)
             s_, r, done = env.step(act)
@@ -69,3 +69,5 @@ if __name__ == '__main__':
             s = s_
     print(rl_brain._state_action_value)
     print(np.argmax(rl_brain._state_action_value, axis=0) + 1)
+
+
